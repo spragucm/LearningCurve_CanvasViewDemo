@@ -11,16 +11,18 @@ package com.example.canvasviewdemo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 public class MainActivity extends Activity 
 	implements OnClickListener{
+	
+	private static final String TAG = MainActivity.class.getSimpleName();
 	
 	//Galaxy Tab 7: w=600 h=1024(976 after lower info bar)
 	//GS4: w=1080 h=1920
@@ -51,18 +53,21 @@ public class MainActivity extends Activity
         List<PaneItem> panes = new ArrayList<PaneItem>();
         
         //The first pane
-    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,255,0), 1.5f, left, top, -8.0f, width, height, 0.0f, 45, 0);  	
+    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,255,0), 1.5f, left, top, -8.0f, width, height, 0.0f, 0, 0);  	
     	panes.add(pane); 
     	
     	//The second pane
-    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,0, 255), 0.5f, left, top, -8.0f, width, height, 45, 0, 0); 
+    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,0, 255), 0.5f, left, top, -8.0f, width, height, 0, 0, 0); 
     	panes.add(pane2);
         
         mCanvasView.setPaneItems(panes);
+        
+        mCanvasView.setOnClickListener(this);
     }
 
 	@Override
 	public void onClick(View v) {
+		Log.d(TAG, "onClick");
 		switch(v.getId()){
 		case R.id.canvas:
 			if(mCanvasView.isAnimating()){

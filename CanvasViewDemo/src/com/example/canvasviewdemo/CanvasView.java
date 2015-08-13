@@ -3,18 +3,19 @@ package com.example.canvasviewdemo;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.R.animator;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.LinearInterpolator;
 
 public class CanvasView extends View{
+	
+	private static final String TAG = CanvasView.class.getSimpleName();
 	
 	private Camera mCamera;
 	private Matrix mMatrix;
@@ -25,6 +26,9 @@ public class CanvasView extends View{
 	
 	private boolean mIsAnimating = false;
 	private ObjectAnimator mAnimator;
+	private PanesAnimator mPanesAnimator;
+	private long mDuration = 1000;
+	
 	
 	public CanvasView(Context context) {
 		super(context);
@@ -52,6 +56,8 @@ public class CanvasView extends View{
 		mAnimator.setRepeatCount(ObjectAnimator.INFINITE);
 		mAnimator.setRepeatMode(ObjectAnimator.REVERSE);
 		mAnimator.setDuration(1000);
+		
+		mPanesAnimator = new SpinningPanesAnimator(mDuration);
 	}
 	
 	public void setPaneItems(List<PaneItem> panes){
@@ -59,7 +65,27 @@ public class CanvasView extends View{
 		for(int i = 0; i < panes.size(); i++){
 			mPanes.add(new PaneDrawable(panes.get(i)));
 		}
+		
+		//The new panes need their animation values set
+		setPanesAnimator(mPanesAnimator);
+		
 		invalidate();
+	}
+	
+	public void setPanesAnimator(PanesAnimator animator){
+		mPanesAnimator = animator;
+		mDuration = mPanesAnimator.getDuration();
+		
+		//Determine the values of animation over the given time frame			
+		mPanesAnimator.setPaneAnimationValues(mPanes);				
+	}
+	
+	public void setDuration(long duration){
+		mDuration = duration;
+		mPanesAnimator.setDuration(mDuration);
+		
+		//Determine the values of animation over the given time frame			
+		mPanesAnimator.setPaneAnimationValues(mPanes);			
 	}
 	
 	@Override
@@ -125,16 +151,32 @@ public class CanvasView extends View{
 	public void startAnimating(){
 		//if(mAnimator.)
 		
-		BounceInterpolator interpolator = new BounceInterpolator();
+		//BounceInterpolator interpolator = new BounceInterpolator();
 		//interpolator.
 		
 		//Each pane can have its own animator that is not running but gets updated by the global animator
 		//then, the animator 
 		//ObjectAnimator animator = ObjectAnimator.ofFloat(target, property, values);
 		//animator.get
+		mAnimator = ObjectAnimator.ofFloat(this, "time", 0, mDuration);
+		mAnimator.setInterpolator(new LinearInterpolator());
+		mAnimator.setDuration(mDuration);
+		mAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+		mAnimator.setRepeatMode(ObjectAnimator.REVERSE);
+		mAnimator.start();
+		mIsAnimating = true;
 	}
 	
 	public void stopAnimating(){
-		
+		mAnimator.cancel();
+		mIsAnimating = false;
+	}
+	
+	public void setTime(float time){
+		Log.d(TAG,"time:" + time);
+		for(int i = 0; i < mPanes.size(); i++){
+			mPanes.get(i).setCurrentTime(time);
+		}
+		invalidate();
 	}
 }

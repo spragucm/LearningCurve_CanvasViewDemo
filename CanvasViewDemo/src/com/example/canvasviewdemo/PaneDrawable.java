@@ -7,8 +7,11 @@ import android.animation.ValueAnimator;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
+import android.util.Log;
 
 public class PaneDrawable {
+	
+	private static final String TAG = PaneDrawable.class.getSimpleName();
 	private static final String ALPHA = "alpha";
 	private static final String COLOR = "color";
 	private static final String SCALE = "scale";
@@ -92,7 +95,7 @@ public class PaneDrawable {
 		mAnimator.setDuration(mDuration);
 	}
 	
-	public void setCurrentTime(long time){
+	public void setCurrentTime(float time){
 		//Update the local time based on the global time
 		mTime = (int) MathUtils.interpolate(0, mDuration, mStartTime, time, mEndTime);
 		mTime = mTime < mStartTime ? mStartTime : mTime;
@@ -100,7 +103,7 @@ public class PaneDrawable {
 		
 		//Move the interpolator to the new time in order to update the values
 		mAnimator.setCurrentPlayTime(mTime);
-		
+				
 		mAlpha = (Integer) mAnimator.getAnimatedValue(ALPHA);
 		mColor = (Integer) mAnimator.getAnimatedValue(COLOR);
 		mScale = (Float) mAnimator.getAnimatedValue(SCALE);
@@ -113,6 +116,10 @@ public class PaneDrawable {
 		
 		mPaint.setAlpha(mAlpha);
 		mPaint.setColor(mColor);
+		
+		Log.d(TAG, "setCurrentTime time:" + time +",localTime:" + mTime + ",alpha:" + mAlpha + ",color:" + mColor
+				+ ",scale:" + mScale + ",thetaX:" + mThetaX + ",thetaY:" + mThetaY + ",thetaZ:" + mThetaZ
+				+ ",transX" + mTranslationX + ",transY:" + mTranslationY + ",transZ:" + mTranslationZ);
 	}	
 		
 	public Paint getPaint(){
@@ -122,7 +129,7 @@ public class PaneDrawable {
 	public float getScale(){
 		return mScale;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setScaleValues(float[] values){
 		mPvhScale = PropertyValuesHolder.ofFloat(SCALE, values);
 	}
@@ -130,7 +137,7 @@ public class PaneDrawable {
 	public int getAlpha(){
 		return mAlpha;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setAlphaValues(int[] values){
 		mPvhAlpha = PropertyValuesHolder.ofInt(ALPHA, values);
 	}
@@ -138,7 +145,7 @@ public class PaneDrawable {
 	public int getColor(){
 		return mColor;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setColorValues(int[] values){
 		mPvhColor = PropertyValuesHolder.ofInt(COLOR, values);
 		mPvhColor.setEvaluator(new ArgbEvaluator());//Change so that color values are correctly evaluated
@@ -147,15 +154,16 @@ public class PaneDrawable {
 	public float getThetaX(){
 		return mThetaX;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setThetaXValues(float[] values){
+		Log.d(TAG,"setThetaXValues:" + values[0] +"," +values[1]);
 		mPvhThetaX = PropertyValuesHolder.ofFloat(THETAX, values);
 	}
 	
 	public float getThetaY(){
 		return mThetaY;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setThetaYValues(float[] values){
 		mPvhThetaY = PropertyValuesHolder.ofFloat(THETAY, values);
 	}
@@ -163,7 +171,7 @@ public class PaneDrawable {
 	public float getThetaZ(){
 		return mThetaZ;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setThetaZValues(float[] values){
 		mPvhThetaZ = PropertyValuesHolder.ofFloat(THETAZ, values);
 	}
@@ -171,7 +179,7 @@ public class PaneDrawable {
 	public float getTranslationX(){
 		return mTranslationX;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setTranslationXValues(float[] values){
 		mPvhTransX = PropertyValuesHolder.ofFloat(TRANSX, values);
 	}
@@ -179,7 +187,7 @@ public class PaneDrawable {
 	public float getTranslationY(){
 		return mTranslationY;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setTranslationYValues(float[] values){
 		mPvhTransY = PropertyValuesHolder.ofFloat(TRANSY, values);
 	}
@@ -187,12 +195,12 @@ public class PaneDrawable {
 	public float getTranslationZ(){
 		return mTranslationZ;
 	}
-	
+	/**These values will only be applied to the animator after updateAnimator is called*/
 	public void setTranslationZValues(float[] values){
 		mPvhTransZ = PropertyValuesHolder.ofFloat(TRANSZ, values);
 	}
 	
-	private void updateAnimator(){
+	public void updateAnimator(){
 		mAnimator = ValueAnimator.ofPropertyValuesHolder(mPvhAlpha, mPvhColor, mPvhThetaX,
 			mPvhThetaY, mPvhThetaZ, mPvhTransX, mPvhTransY, mPvhTransZ, mPvhScale);
 		mAnimator.setDuration(mDuration);
@@ -208,5 +216,9 @@ public class PaneDrawable {
 	
 	public Path getPath(){
 		return mPaneItem.getPath();
+	}
+	
+	public PaneItem getPaneItem(){
+		return mPaneItem;
 	}
 }
