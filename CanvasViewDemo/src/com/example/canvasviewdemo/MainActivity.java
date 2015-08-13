@@ -20,6 +20,7 @@ import android.os.Bundle;
 public class MainActivity extends Activity {
 	
 	//Galaxy Tab 7: w=600 h=1024(976 after lower info bar)
+	//GS4: w=1080 h=1920
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +29,19 @@ public class MainActivity extends Activity {
         
         CanvasView canvasView = (CanvasView)findViewById(R.id.canvas);
         
-        float width = 400;//ScreenW = 600
-        float height = 594;//ScreenH = 1024
-        float left = (600 - width)/2.0f;//To center rectangle horizontally on screen
-        float top = (976 - height)/2.0f;//To center rectangle vertically on screen
+        //Uncomment for Galaxy Tab
+        //float width = 400;//ScreenW = 600
+        //float height = 594;//ScreenH = 1024
+        //float left = (600 - width)/2.0f;//To center rectangle horizontally on screen
+        //float top = (976 - height)/2.0f;//To center rectangle vertically on screen
+        
+        //Uncomment for GS4
+        float screenW = 1080;
+        float screenH = 1920;
+        float width = 600;//ScreenW = 1080
+        float height = screenW - 20;//ScreenH = 1920
+        float left = (screenW - width)/2.0f;//To center rectangle horizontally on screen
+        float top = (screenH - height)/2.0f;//To center rectangle vertically on screen
         
         Random rand = new Random();
         List<PaneItem> panes = new ArrayList<PaneItem>();
