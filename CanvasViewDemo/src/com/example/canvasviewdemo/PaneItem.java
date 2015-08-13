@@ -1,30 +1,42 @@
 package com.example.canvasviewdemo;
 
-import android.graphics.Paint;
 import android.graphics.Path;
 
 public class PaneItem {
 	
 	public static final int RECTANGLE = 0;
 	
-	private int mShape = RECTANGLE;
+	private int mShape;
+	private int mAlpha;
+	private int mColor;
+	private float mScale;
 	private float mLeft;
 	private float mTop;
+	private float mCameraHeight;// -8 is default
 	private float mWidth;
 	private float mHeight;
-	private float mScale = 1.0f;
-	private float mRotation = 0;
-	private float mRotationX = 0;
-	private float mRotationY = 0;
+	private float mRotationX;
+	private float mRotationY;
+	private float mRotation;
+	private boolean mIsBeingEdited = false;
 	
 	private Path mPath;
-	private Paint mPaint = new Paint();
-	
-	public PaneItem(int shape, float left, float top, float width, float height){
+		
+	public PaneItem(int shape, int alpha, int color, float scale, float left, float top, float cameraHeight,
+			float width, float height, float rotationX, float rotationY, float rotationZ){
+		mShape = shape;
+		mAlpha = alpha;
+		mColor = color;
+		mScale = scale;
 		mLeft = left;
 		mTop = top;
+		mCameraHeight = cameraHeight;
 		mWidth = width;
 		mHeight = height;
+		mRotationX = rotationX;
+		mRotationY = rotationY;
+		mRotation = rotationZ;
+		
 		mPath = createPath(mShape, mWidth, mHeight);
 	}
 	
@@ -40,6 +52,12 @@ public class PaneItem {
 	public void setTop(float top) {
 		mTop = top;
 	}
+	public float getCameraHeight(){
+		return mCameraHeight;
+	}
+	public void setCameraHeight(float height){
+		mCameraHeight = height;
+	}	
 	public float getWidth() {
 		return mWidth;
 	}
@@ -85,32 +103,16 @@ public class PaneItem {
 		mRotationY = rotationY;
 	}
 	public int getColor() {
-		return mPaint.getColor();
+		return mColor;
 	}
 	public void setColor(int color) {
-		mPaint.setColor(color);
+		mColor = color;
 	}
 	public int getAlpha() {
-		return mPaint.getAlpha();
+		return mAlpha;
 	}
 	public void setAlpha(int alpha) {
-		mPaint.setAlpha(alpha);
-	}
-	
-	public Paint getPaint(){
-		return mPaint;
-	}
-	
-	public void setPaint(Paint paint){
-		mPaint = paint;
-	}
-	
-	public Path getPath(){
-		return mPath;
-	}
-	
-	public void setPath(Path path){
-		mPath = path;
+		mAlpha = alpha;
 	}
 	
 	private static Path createPath(int shape, float width, float height){
@@ -132,5 +134,17 @@ public class PaneItem {
 		}
 		
 		return path;
+	}
+	
+	public Path getPath(){
+		return mPath;
+	}
+	
+	public void setIsBeingEdited(boolean isBeingEdited){
+		mIsBeingEdited = isBeingEdited;
+	}
+	
+	public boolean isBeingEdited(){
+		return mIsBeingEdited;
 	}
 }

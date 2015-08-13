@@ -16,18 +16,23 @@ import java.util.Random;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity 
+	implements OnClickListener{
 	
 	//Galaxy Tab 7: w=600 h=1024(976 after lower info bar)
 	//GS4: w=1080 h=1920
+	
+	private CanvasView mCanvasView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
         setContentView(R.layout.activity_main);
         
-        CanvasView canvasView = (CanvasView)findViewById(R.id.canvas);
+        mCanvasView = (CanvasView)findViewById(R.id.canvas);
         
         //Uncomment for Galaxy Tab
         float width = 400;//ScreenW = 600
@@ -43,37 +48,29 @@ public class MainActivity extends Activity {
         //float left = (screenW - width)/2.0f;//To center rectangle horizontally on screen
         //float top = (screenH - height)/2.0f;//To center rectangle vertically on screen
         
-        Random rand = new Random();
         List<PaneItem> panes = new ArrayList<PaneItem>();
         
         //The first pane
-    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, left, top, width, height);
-    	
-    	pane.setColor(Color.rgb(0,255,0));
-    	pane.setAlpha(255);
-    	
-    	pane.setRotation(90);
-    	pane.setRotationX(0);
-    	pane.setRotationY(0);
-    	
-    	pane.setScale(1.5f);
-    	
+    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,255,0), 1.5f, left, top, -8.0f, width, height, 0.0f, 0.0f, 0.0f);  	
     	panes.add(pane); 
     	
     	//The second pane
-    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, left, top, width, height);
-    	
-    	pane2.setColor(Color.rgb(0,0,255));
-    	pane2.setAlpha(255);
-    	
-    	pane2.setRotation(45);
-    	pane2.setRotationX(0);
-    	pane2.setRotationY(0);
-    	
-    	pane2.setScale(0.5f);
-    	
+    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,0, 255), 0.5f, left, top, -8.0f, width, height, 0.0f, 0.0f, 0.0f); 
     	panes.add(pane2);
         
-        canvasView.setPaneItems(panes);
+        mCanvasView.setPaneItems(panes);
     }
+
+	@Override
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.canvas:
+			if(mCanvasView.isAnimating()){
+				mCanvasView.stopAnimating();
+			}else{
+				mCanvasView.startAnimating();
+			}
+			break;
+		}
+	}
 }
