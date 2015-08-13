@@ -51,11 +51,11 @@ public class MainActivity extends Activity
         List<PaneItem> panes = new ArrayList<PaneItem>();
         
         //The first pane
-    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,255,0), 1.5f, left, top, -8.0f, width, height, 0.0f, 0.0f, 0.0f);  	
+    	PaneItem pane = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,255,0), 1.5f, left, top, -8.0f, width, height, 0.0f, 45, 0);  	
     	panes.add(pane); 
     	
     	//The second pane
-    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,0, 255), 0.5f, left, top, -8.0f, width, height, 0.0f, 0.0f, 0.0f); 
+    	PaneItem pane2 = new PaneItem(PaneItem.RECTANGLE, 255, Color.rgb(0,0, 255), 0.5f, left, top, -8.0f, width, height, 45, 0, 0); 
     	panes.add(pane2);
         
         mCanvasView.setPaneItems(panes);

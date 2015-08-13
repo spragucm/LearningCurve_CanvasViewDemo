@@ -86,25 +86,25 @@ public class CanvasView extends View{
 			mMatrix.postTranslate(mPane.getTranslationX(), mPane.getTranslationY());
 			
 			//Now scale about its center
-			//centX = mPane.getWidth()/2.0f + mPane.getTranslationX();
-			//centY = mPane.getHeight()/2.0f + mPane.getTranslationY();	
-			//mMatrix.postScale(mPane.getScale(), mPane.getScale(), centX, centY);			
+			centX = mPane.getWidth()/2.0f + mPane.getTranslationX();
+			centY = mPane.getHeight()/2.0f + mPane.getTranslationY();	
+			mMatrix.postScale(mPane.getScale(), mPane.getScale(), centX, centY);			
 			//canvas.setMatrix(mMatrix);
 			
 			//Translate so that the center of the pane is at (0,0) so that the camera rotations
 			//can be applied
-			//mMatrix.postTranslate(-centX, -centY);
+			mMatrix.postTranslate(-centX, -centY);
 			
 			//This will basically give us a matrix that was rotated about 0,0,-8
 			//Which is not about the center of the pane (unless by coincidence)			
-			//mCamera.setLocation(0, 0, mPane.getTranslationZ());
-			//mCamera.rotate(mPane.getThetaX(), mPane.getThetaY(), mPane.getThetaZ());
-			//mCamera.getMatrix(mMatrixCamera);//this resets mMatrix to the new matrix
+			mCamera.setLocation(0, 0, mPane.getTranslationZ());
+			mCamera.rotate(mPane.getThetaX(), mPane.getThetaY(), mPane.getThetaZ());
+			mCamera.getMatrix(mMatrixCamera);//this resets mMatrix to the new matrix
 			
-			//mMatrix.postConcat(mMatrixCamera);
+			mMatrix.postConcat(mMatrixCamera);
 			
 			//Now move the pane back to its final position
-			//mMatrix.postTranslate(centX, centY);	
+			mMatrix.postTranslate(centX, centY);	
 			
 			//Apply the matrix to the canvas
 			canvas.setMatrix(mMatrix);
